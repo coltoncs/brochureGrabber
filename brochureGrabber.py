@@ -10,15 +10,6 @@ data = open('sitecore_data.json', 'r')
 resources.truncate()
 downloads.truncate()
 
-def getDownloadLink(url):
-    http = httplib2.Http()
-    status, response = http.request(url)
-
-    for link in BeautifulSoup(response, "html.parser").find_all('a'):
-        if link.get_text().find("Download") != -1:
-            downloads.write(link.get('href'))
-            downloads.write("\n")
-
 def getResourceTree(url):
     http = httplib2.Http()
     status, response = http.request(url)
@@ -33,8 +24,6 @@ def getResourceTree(url):
         newWord += "\n"
         resources.write(newWord)
     
-    for line in resources.readlines():
-        getDownloadLink("www.sitecore.net" + line)
 
 getResourceTree("http://www.sitecore.net/en/resources/index")
 
